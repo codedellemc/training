@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Dude, Where's My Data? Persistence With Docker</title>
+
+		<meta name="description" content="Dude, Where's My Data? Persistence With Docker">
+		<meta name="author" content="Kendrick Coleman">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/leaguecopy.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-background="images/backgrounds/dude04.png">
+					<h2>Dude, Where's My Data?</h2>
+					<h3>Persistence With Docker</h3>
+					<p>
+						<a href="http://twitter.com/kendrickcoleman">@KendrickColeman</a>
+					</p>
+					<center>
+						<a href="http://twitter.com/kendrickcoleman"><img src="images/icons/twitter_150.png" style="width:6%;border-radius: 50%;"></a>
+						<a href="http://github.com/kacole2"><img src="images/icons/github_250.png" style="width:6%;border-radius: 50%;"></a>
+						<a href="http://kendrickcoleman.com"><img src="images/icons/rss_150.png" style="width:6%;border-radius: 50%;"></a>
+						<a href="https://www.youtube.com/user/kacole2/videos"><img src="images/icons/youtube_150.png" style="width:6%;border-radius: 50%;"></a>
+						<a href="http://emccode.github.io"><img src="images/icons/emccode_150.png" style="width:6%;border-radius: 50%;"></a>
+					</center>
+					<small><p>
+						<a href="http://bit.ly/containercon">http://bit.ly/containercon</a>
+					</p></small>
+				</section>
+				<!--
+				<section data-background="images/backgrounds/bourbon12.jpg">
+					<div style="float: right; width: 49%;">
+						<img src="images/kendrick.jpg" style="border-radius: 25px;">
+					</div>
+					<div style="float: left; width: 49%;">
+						<h2>who am i</h2>
+						<ul>
+							<li>reformed sysadmin</li>
+							<li>ruby/rails/node/js & a wee bit of go</li>
+							<li>had the first google result for 'kendrick' until 2012</li>
+							<li>bourbon aficionado</li>
+						</ul>
+					</div>
+				</section>
+				
+				<section data-background="images/backgrounds/github.png">
+				</section>
+				-->
+				<section data-background="images/backgrounds/homer-doh1.jpg">
+				</section>
+				<section>
+					<section data-background="images/gif/implosion.gif">
+						<!-- <h3>what happens when my app implodes?</h3> 
+						<img src="images/gif/implosion.gif" width="60%">-->
+						<h3 class="fragment" style="color:red;"><b>just start another container!</b></h3>
+					</section>
+					<section>
+						<!-- what happens when I stop a container?</h3> -->
+						<img src="images/gif/denied2.gif" width="80%">
+						<h3 class="fragment" style="color:red;"><b>ACCESS DENIED!</b></h3>
+					</section>
+					<section data-background="images/gif/disappear.gif">
+						<!-- <h3>what happens when I completely remove a container?</h3>
+						<img src="images/gif/disappear.gif"> -->
+						<h3 class="fragment" style="color:red;"><b>DATA DISAPPEARS!</b></h3>
+					</section> 
+					<section>
+						<h2>Today's Nature</h2>
+						<ul>
+							<li>stateless applications</li>
+							<li>favors non-persistent data</li>
+							<li>load-balancers, routing, & services</li>
+						</ul>
+					</section>
+					<section>
+						<h3>we all can't be</h3>
+						<img src="images/unicorn.jpg">
+						<h3>unicorns</h3>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>persistence of yester-year</h3>
+						<p>database lives on a outside machine</p>
+						<img src="images/outsidedb.png" width="65%">
+					</section>
+					<section>
+						<h3>persistence based on object storage</h3>
+						<img src="images/s3.png" width="65%">
+					</section>
+					<section>
+						<h2>docker data volumes</h2>
+						<ul>
+							<li>a directory within one or more containers that bypasses the Union File System</li>
+							<ul style="font-size: 0.9em;">
+								<li>Initialized during container creation.</li>
+								<!-- <li>If the container’s base image contains data at the specified mount point, that existing data is copied into the new volume upon volume initialization.</li> -->
+								<li>Data volumes can be shared and reused among containers.</li>
+								<li>Changes to a data volume are made directly.</li>
+								<li>Changes to a data volume will not be included when you update an image.</li>
+								<li>Data volumes persist even if the container itself is deleted.</li>
+							</ul>
+						</ul>
+					</section>
+					<section>
+						<h3>block/nas host mounts</h3>
+						<img src="images/nfs.png" width="65%">
+						<pre><code data-trim contenteditable>
+$ docker run -i -t -v nfs/host/mount/path:/container/folder/path busybox
+						</code></pre>
+						<p>== a management nightmare</p>
+					</section>
+					<section>
+						<h3>see it in action!</h3>
+						<pre><code data-trim contenteditable>
+$ docker run -ti -v myvol:/myvol busybox
+/ # ls
+bin      dev      etc      home     lib      lib64    linuxrc  media    mnt      myvol    opt      proc     root     run      sbin     sys      tmp      usr      var
+/ # cd myvol/
+/myvol # touch newfile
+/myvol # exit
+						</code></pre>
+						<pre><code data-trim contenteditable>
+$ cd /var/lib/docker/volumes/myvol/_data
+$ ls
+newfile
+						</code></pre>
+					</section>
+					<section>
+						<h3>the *data only* container</h3>
+						<pre><code data-trim contenteditable>
+FROM centos
+VOLUME /var/lib/mysql
+RUN yum -y install mysql-server
+RUN touch /etc/sysconfig/network
+EXPOSE 3306
+						</code></pre>
+						<pre><code data-trim contenteditable>
+$ docker build .
+...
+Successfully built b962491b87db
+						</code></pre>
+						<p>----------------------------------</p>
+						<pre><code data-trim contenteditable>
+FROM centos
+VOLUME /var/lib/mysql
+CMD ["true"]
+						</code></pre>
+						<pre><code data-trim contenteditable>
+$ docker build .
+...
+Successfully built 5f2bca5b686e
+$ docker run --name data 5f2bca5b686e
+						</code></pre>
+					</section>
+					<section>
+						<h3>the *data only* container</h3>
+						<pre><code data-trim contenteditable>
+$ docker run -i -t --volumes-from data b962491b87db bash
+bash-4.1# service mysqld start 
+bash-4.1# mysql -u root
+mysql> connect test;
+mysql> create table a(a int);
+Query OK, 0 rows affected (0.01 sec)
+exit
+						</code></pre>
+						<pre><code data-trim contenteditable>
+$ docker run -i -t --volumes-from data b962491b87db bash
+bash-4.1# service mysqld start
+bash-4.1# mysql -u root
+mysql> connect test;
+mysql> select * from a;
+Empty set (0.00 sec)
+						</code></pre>
+						<br>
+						<small><a href="http://www.alexecollins.com/docker-persistence/">http://www.alexecollins.com/docker-persistence/</a></small>
+					</section>
+					<section>
+						<h2>Other Docker Data Volume Facts</h2>
+						<ul style="font-size: 0.9em;">
+							<li>You can use the -v multiple times to mount multiple data volumes</li>
+							<li>Docker defaults to a read-write volume but we can also mount a directory read-only.</li>
+							<li>If a path already exists inside the container’s image, its contents will be replaced by the contents of on the host during mount.</li>
+							<li>Docker will never automatically delete volumes when you remove a container.</li>
+						</ul>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Docker Volume Driver</h2>
+						<ul>
+							<li>introduced in 1.7 Experimental</li>
+							<li>merged into master in 1.8 <a href="https://github.com/docker/docker/pull/14659">#14659</a>
+							<li>allows third-party container data management solutions to provide data volumes for containers which operate on data, such as databases, queues and key-value stores and other stateful applications that use the filesystem</li>
+						</ul>
+					</section>
+					<section>
+						<h1>what does this really mean?</h1>
+					</section>
+					<section>
+						<img src="images/why00.png" style="width:100%;">
+					</section>
+					<section>
+						<img src="images/why01.png" style="width:100%;">
+					</section>
+					<section>
+						<img src="images/why02.png" style="width:100%;">
+					</section>
+					<section>
+						<img src="images/why03.png" style="width:100%;">
+					</section>
+					<section>
+						<img src="images/why04.png" style="width:100%;">
+					</section>
+					<section>
+						<h3 style="font-size: 1.8em;">Will The Real Slim Shady Please Stand Up?</h3>
+						<h4>(who's got volume drivers today?)</h4>
+						<ul style="list-style: none;">
+							<li style="width: 15.7%;display: inline-block;margin: 0.1%">
+								<img src="images/blockbridge.png"><br>
+								<p style="font-size: 0.5em;"><a href="https://github.com/blockbridge/blockbridge-docker-volume">blockbridge/blockbridge-docker-volume</a></p>
+							</li>
+							<li style="width: 15.7%;display: inline-block;margin: 0.1%">
+								<img src="images/flocker.png"><br>
+								<p style="font-size: 0.5em;"><a href="https://github.com/ClusterHQ/flocker-docker-plugin">ClusterHQ/flocker-docker-plugin</a></p>
+							</li>
+							<li style="width: 15.7%;display: inline-block;margin: 0.1%">
+								<img src="images/glusterfs.png"><br>
+								<p style="font-size: 0.5em;"><a href="https://github.com/calavera/docker-volume-glusterfs">calavera/docker-volume-glusterfs</a></p>
+							</li>
+							<li style="width: 15.7%;display: inline-block;margin: 0.1%">
+								<img src="images/keywhiz.png"><br>
+								<p style="font-size: 0.5em;"><a href="https://github.com/calavera/docker-volume-keywhiz">calavera/docker-volume-keywhiz</a></p>
+							</li>
+							<li style="width: 15.7%;display: inline-block;margin: 0.1%">
+								<img src="images/ceph2.png"  style="width: 80%;margin-left: auto;margin-right: auto;"><br>
+								<p style="font-size: 0.5em;"><a href="https://github.com/AcalephStorage/docker-volume-ceph-rbd">AcalephStorage/docker-volume-ceph-rbd</a></p>
+							</li>
+							<li style="width: 15.7%;display: inline-block;margin: 0.1%">
+								<img src="images/rexray.png"><br>
+								<p style="font-size: 0.5em;"><a href="https://github.com/emccode/rexray">emccode/rexray</a></p>
+							</li>
+						</ul>
+					</section>
+				</section>
+					<section>
+						<section>
+							<h2>rexray</h2>
+							<img src="images/rexray.png" style="width:28%;float:right;" class="nospace">
+							<p class="nospace" style="width: 68%;float:left;margin-top:10%">
+							a volume plugin which is written in Go and provides advanced storage functionality for various platforms</p>
+							<p><a href="https://github.com/emccode/rexray">https://github.com/emccode/rexray</a>
+						</section>
+						<section>
+							<h3>rexray benefits</h3>
+							<ul>
+								<li>functions with Docker 1.8 volume drivers</li>
+								<li>can function as a standalone go binary</li>
+								<li>drivers are built for:
+									<ul>
+										<li>EC2 EBS Volumes</li>
+										<li>OpenStack with Rackspace</li>
+										<li>EMC's All Flash Array: XtremIO</li>
+										<li>EMC's Software-Defined Scale-Out Storage Platform: ScaleIO</li>
+									</ul>
+								<li>can provision/delete, mount/unmount, snapshot and list volumes from the rexray CLI</li>
+							</ul>
+						</section>
+						<section>
+							<h3>so how does it work?</h3>
+							<ul>
+								<li>get the rexray binary</li>
+								<li>add a quick init file and add it to systemd</li>
+								<li>set the `ENV` variables for the storage platform</li> 
+								<li>the reload the service</li>
+								<ul><li>^^^ 1-4 will become apt/yum install</li></ul>
+								<li>rexray will perform a test to see the platform and what types of storage volumes are available to it via series of tests (ala introspection)</li>
+								<li>create a new volume</li>
+								<li>docker run...</li>
+							</ul>
+						</section>	
+						<section data-background="images/backgrounds/rexraymap.png">
+						</section>
+						<section data-background="images/doitlive02.gif">
+							<h2>quick demo using EC2!</h2>
+							<h4><a href="https://github.com/kacole2/wordpress-compose">https://github.com/kacole2/wordpress-compose</a></h4>
+						</section>	
+						<section data-background="images/backgrounds/githubrexray.png">
+							<h1 style="color: black;">Help us!</h1>
+						</section>	
+						<section data-background="images/backgrounds/code.png">
+							<h1 style="color: black;">We're Hiring!</h1>
+							<h3 style="color: black;">Developer Advocates and people that want to hack on container stuff with Go!</h3>
+							<h4 style="color: black;"><strike>Come see us in booth #340</strike> <br>send your resume to emccode@emc.com</h4>
+							<ul style="list-style:none;">
+								<li><a href="https://github.com/emccode/rexray" style="color: #333333;text-shadow: none;">https://github.com/emccode/rexray</a></li>
+								<li><a href="https://github.com/kacole2/wordpress-compose" style="color: #333333;text-shadow: none;">https://github.com/kacole2/wordpress-compose</a></li>
+							</ul>
+						</section>	
+					</section>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
