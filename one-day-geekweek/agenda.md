@@ -8,9 +8,13 @@ A single day, heavy duty, partially hands-on introduction to discussions around 
 
 ## Prework
 
-* Read Phoenix Project
+* Read [Phoenix Project](http://itrevolution.com/books/phoenix-project-devops-book/)
+* Read [Intro to the Command Line](https://www.gotealeaf.com/books/command_line)
+* Read [A Guide to Git and GitHub](https://www.gotealeaf.com/books/git)
 * Install `git`
 * Install `cf`
+
+
 
 ---
 
