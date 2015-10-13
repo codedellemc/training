@@ -68,3 +68,4 @@ What can we sell?
 * [Find a DevOps MeetUp Near You](http://www.meetup.com/find/?allMeetups=false&keywords=DevOps&radius=Infinity)
 * [Join Code Community](http://blog.emccode.com/2015/07/10/the-codecommunity-is-open-for-business)
 * [Podcast DevOps Cafe](http://devopscafe.org)
+* [Hacker News](https://news.ycombinator.com)
