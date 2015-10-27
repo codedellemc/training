@@ -31,12 +31,16 @@ A single day, heavy duty, partially hands-on introduction to discussions around 
   * Infrastructure as Code
   * Basics of `git`:  `checkout`, forking, `commit`, `push`, pull requests
   * *Hands On*: `clone`, edit, `commit` a repo.
+* Business Drivers
+  * Why businesses need DevOps
+  * How DevOps is implemented
 
 ---
 
 ##Part 2
 
 * Cloud Native Applications
+  * What are they
   * Why they are 'taking over'
   * The 12 Factors
 * Cloud Native Platforms
