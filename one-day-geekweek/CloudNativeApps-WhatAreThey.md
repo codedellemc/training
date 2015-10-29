@@ -1,10 +1,10 @@
-* What Are They?
-  *Cloud Native is more about the application architecture and design than the code
+# What Are They?
  
- Cloud Native requires that application design be done to decouple from physical resources
- Cloud Native Apps make the most of Cloud Resources
+# Cloud Native is more about the application architecture and design than the code
+ * Cloud Native requires that application design be done to decouple from physical resources
+ * Cloud Native Apps make the most of Cloud Resources
  
-Key Points: 
+# Key Points: 
  * The Twelve-Factor App: A collection of cloud native app architecture patterns
  * Microservices: Independently deployable services that do one thing well
  * Self-Service Agile Infrastructure: Platforms for rapid, repeatable, and consistent provisioning of app environments and backing services
