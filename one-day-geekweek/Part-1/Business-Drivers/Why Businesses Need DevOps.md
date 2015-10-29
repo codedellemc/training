@@ -18,5 +18,6 @@ class: center, middle
    *  20% Saw Improvement in Time to Market
    *  22% Improvement in quality
    *  17% Increase in deployments
+
  *  But More Importantly
- * They saw 22% increase in New Customers and 19% increase in revene
+   * They saw 22% increase in New Customers and 19% increase in revene
