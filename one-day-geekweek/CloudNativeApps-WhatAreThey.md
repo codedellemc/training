@@ -15,4 +15,4 @@
 
  
  
- # From a business perspective the core need of cloud based apps is efficiency of resource utilization. In cloud we pay for every resource provisioned. This means the application needs to use all provisioned resources instead of 
+From a business perspective the core need of cloud based apps is efficiency of resource utilization. In cloud we pay for every resource provisioned. This means the application needs to use all provisioned resources instead of 
