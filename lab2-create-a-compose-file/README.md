@@ -19,19 +19,11 @@ Docker Compose is included in the Docker Toolbox.
 ## Create an Application
 We will follow the steps as listed on [Docker Compose Quickstart](https://docs.docker.com/compose/)
 
-Create a new directory to host the compose file
-```
-$ cd ~
-$ mkdir composetest
-$ cd composetest
-```
+Create a new directory to host the compose file called ```composetest```.
 
-Inside this directory, create app.py, a simple web app that uses the Flask framework and increments a value in Redis.
-```
-$ nano app.py
-```
+Inside this directory, create ```app.py```, a simple web app that uses the Flask framework and increments a value in Redis. You don't need Python installed since we are going to run the app inside a container later.
 
-copy and paste the following into `app.py`. Use `CTRL+X` and `Y` to save the file:
+Copy and paste the following into `app.py` and save the file:
 ```
 from flask import Flask
 from redis import Redis
@@ -50,24 +42,15 @@ if __name__ == "__main__":
 
 Next, define the Python dependencies in a file called `requirements.txt`:
 ```
-nano requirements.txt
-```
-
-Copy and paste:
-```
 flask
 redis
 ```
 
-Now, create a Docker image containing all of your app’s dependencies. You specify how to build the image using a file called `Dockerfile`:
-
-```
-nano Dockerfile
-```
+Now, create a Docker image containing all of your app’s dependencies. You specify how to build the image using a file called `Dockerfile`.
 
 There are more settings of course, and we'd recommend you to read up on them at the [Dockerfile reference](https://docs.docker.com/reference/builder/).:
 
-Copy and paste:
+Copy and paste the following into `Dockerfile`:
 ```
 FROM python:2.7
 ADD . /code
@@ -76,12 +59,7 @@ RUN pip install -r requirements.txt
 CMD python app.py
 ```
 
-Next, define a set of services using `docker-compose.yml`:
-```
-nano docker-compose.yml
-```
-
-The following `docker-compose.yml` file defines two containers `web` and `redis` that are connected via specifying the `links` parameter.  The content of the container is specified in two ways.  First int the `web` container, it is told to `build: .` which ensures the `Dockerfile` specified above with the Python app is built.  The `redis` container specifies `image: redis` which ensures an official image of `redis` is pulled.  The `web` container has a `ports:` parameter specified which exposes the `5000` port to the outside world.  The last portion is related to the exposing this working directory to the `web` container, this is done through the `volumes` parameter with `.:/code`. Check out all the other attributes at the [docker-compose.yml reference](https://docs.docker.com/compose/yml/).
+Next, define a set of services using `docker-compose.yml`. The `docker-compose.yml` file defines two containers `web` and `redis` that are connected via specifying the `links` parameter.  The content of the container is specified in two ways.  First int the `web` container, it is told to `build: .` which ensures the `Dockerfile` specified above with the Python app is built.  The `redis` container specifies `image: redis` which ensures an official image of `redis` is pulled.  The `web` container has a `ports:` parameter specified which exposes the `5000` port to the outside world.  The last portion is related to the exposing this working directory to the `web` container, this is done through the `volumes` parameter with `.:/code`. Check out all the other attributes at the [docker-compose.yml reference](https://docs.docker.com/compose/yml/).
 
 Copy and paste:
 ```
