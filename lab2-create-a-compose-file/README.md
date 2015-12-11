@@ -7,24 +7,14 @@ In this lab you'll learn how to create a Docker Compose file to programmatically
 
 ### Lab setup
 
-Each participant has been handed a piece of paper with two machines `student00Xa` and `student00Xb` with their associated IP addresses. Each machine has been provisioned by Docker Machine with Docker 1.9 and REX-Ray 0.2 installed for use. The SSH password for each host is the host name. ie. Host `student001a`'s password is `student001a`
+Same as Lab 1.
 
-#### Mac/Linux
-Use Terminal
-`ssh IPADDRESS -l student001a`
+Verify that you have the following software installed:
 
-#### Windows
-Use PuTTy
+1. A 64-bit OS
+2. [Docker Toolbox](https://www.docker.com/toolbox)
 
-## Install Compose
-Before we begin, we have to install Docker Compose. As of this writing, the latest release is [v1.5.0](https://github.com/docker/compose/releases)
-
-```
-$ sudo -s
-$ curl -L https://github.com/docker/compose/releases/download/1.5.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-$ chmod +x /usr/local/bin/docker-compose
-$ exit
-```
+Docker Compose is included in the Docker Toolbox.
 
 ## Create an Application
 We will follow the steps as listed on [Docker Compose Quickstart](https://docs.docker.com/compose/)
