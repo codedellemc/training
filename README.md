@@ -1,6 +1,8 @@
 3-Hour Docker Storage and Networking Workshop Training
 ===============================
 
+This is an altered version of [https://github.com/emccode/training/](https://github.com/emccode/training/tree/master/docker-workshops/docker-storage-networking).
+
 ## Description
 
 In this session you will learn how to use the basics of Docker Engine, how to search for Docker images on Docker hub, how to run your images and connect to the applications inside them, deploy multi-container applications using Compose, build Dockerfiles, configure a Swarm cluster, use [REX-Ray](https://github.com/emccode/rexray) for storage persistence, and network containers between hosts.
