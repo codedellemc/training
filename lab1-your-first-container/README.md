@@ -5,16 +5,43 @@ Lab I: Run your first container (Quick Refresher)
 
 In this lab you'll learn use Docker, how to search for Docker images on Docker hub, and how to run your images and connect to the applications inside them.
 
-### Lab setup
+## Lab setup verification
 
-Each participant has been handed a piece of paper with two machines `student00Xa` and `student00Xb` with their associated IP addresses. Each machine has been provisioned by Docker Machine with Docker 1.9 and REX-Ray 0.2 installed for use. The SSH password for each host is the host name. ie. Host `student001a`'s password is `student001a`
+Verify that you have the following software installed:
 
-#### Mac/Linux
-Use Terminal
-`ssh IPADDRESS -l student002a`
+1. A 64-bit OS
+2. [Docker Toolbox](https://www.docker.com/toolbox)
 
-#### Windows
-Use PuTTy
+(Sidenote: If you want to get into managing your apps in a more interesting way have a look at [Homebrew](http://brew.sh/) and [Homebrew Cask](http://caskroom.io/) for OS X, and [Chocolatey for Windows](https://chocolatey.org/packages/docker).)
+
+Docker Machine will create a virtual machine for us where we can run our docker containers, since you cannot run Docker containers on bare OS X or Windows. This part isn't needed if you're running a Linux desktop.
+
+Note that running the "Docker Quickstart Terminal" shortcut for Windows will automatically setup a host for you, and you can skip straight to the Using Docker part.
+
+Let's set up our first container host!
+
+```
+$ docker-machine create --driver virtualbox default
+Creating VirtualBox VM...
+Creating SSH key...
+Starting VirtualBox VM...
+Starting VM...
+To see how to connect Docker to this machine, run: docker-machine env default
+```
+
+You now have a container host ready to use, let's make sure we can connect to it.
+
+```
+$ docker-machine env default
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.101:2376"
+export DOCKER_CERT_PATH="/Users/user/.docker/machine/machines/default"
+export DOCKER_MACHINE_NAME="default"
+# Run this command to configure your shell:
+# eval "$(docker-machine env default)"
+```
+
+Now copy & paste either the `export` lines, or run the `eval` command. Both will make sure your shell is correctly configured to connect to the correct container host.
 
 ## Using Docker
 SSH into host `a` using the public IP address provided.
