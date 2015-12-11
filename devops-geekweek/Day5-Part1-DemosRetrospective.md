@@ -1,5 +1,0 @@
-# Demo Day!
-
-----
-
-# Sprint Retrospective

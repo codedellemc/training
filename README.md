@@ -1,24 +1,54 @@
-Training modules from EMC {code}
-================================
+3-Hour Docker Storage and Networking Workshop Training
+===============================
 
-Welcome to the official training modules from the {code} team.  Here we will maintain all of our training material that we build ranging from general 101 level topics through advanced hands on workshops.
+## Description
 
-### Accreditation
+In this session you will learn how to use the basics of Docker Engine, how to search for Docker images on Docker hub, how to run your images and connect to the applications inside them, deploy multi-container applications using Compose, build Dockerfiles, configure a Swarm cluster, use [REX-Ray](https://github.com/emccode/rexray) for storage persistence, and network containers between hosts.
 
-Here you will find all the DevOps-related quarterly accreditation training that we have created for EMC SEs and the general public.
+The workshop is intended for Docker beginners, intermediate users, and those interested in storage and networking.
 
-### DevOps GeekWeek
+If you're new to Docker and looking for a great introduction, this will is a good opportunity to get a hands-on introduction to the fundamentals of the Docker Platform.
 
-This is a 5-day class that Jonas Rosland and Matt Cowger are giving to interested individuals within EMC that want to go deeper and get hands on with developing applications in an Agile manner, focusing on 12-factor rules and running them on a Cloud Native platform.
+To get started on your own outside the classroom, follow the directions specified in [/prep/readme](https://github.com/emccode/training/blob/master/docker-storage-networking/prep/README.md) to get your AWS instances started. The slides are available at [Docker 1.9 Workshop](http://www.slideshare.net/EMCCODE/docker-19-workshop).
 
-### Docker Workshops
+### Part I: Introduction to the Docker Platform
+ - Overview & Intro Presentation (20 minutes)
 
-These are a collection of comprehensive workshops including Docker platform tools ranging from introductory topics with advanced concepts including storage and networking.
+### Lab I: Run your first container
 
-### Maintainers
+ - Start it
+ - See the logs
+ - See which ports are open
+ - Connect to the container
 
-Github|Twitter
------------|-----
-[@jrosland](https://github.com/jonasrosland)|[Jonas Rosland](https://twitter.com/jonasrosland)
-[@mcowger](https://github.com/mcowger)|[Matt Cowger](https://twitter.com/mcowger)
-[@kacole2](https://github.com/kacole2)|[Kendrick Coleman](https://twitter.com/kendrickcoleman)
+### Lab II: Create A Compose File
+
+ - Install Docker Compose
+ - Create a python application
+ - Create a Dockerfile
+ - Deploy the App
+
+### Lab III: Create A Swarm Cluster
+
+ - Get a Swarm ID
+ - Configure Swarm Agents
+ - Configure Swarm Master
+ - Deploy containers to Swarm pool
+
+### Lab IV: Container Persistence
+
+ - Slide on storage persistence and it's necessity
+ - Tour of [REX-Ray](https://github.com/emccode/rexray)
+ - Create Volume with [REX-Ray](https://github.com/emccode/rexray)
+ - Demo persistence between container instances
+ - Docker 1.9 Enhanced Storage features
+ - Create volume with Docker Volume commands
+ - Demo persistence between host instances
+
+### Lab V: Networking Between Container Hosts
+
+ - Destroy Existing Swarm Setup
+ - Create New Swarm using Consul
+ - Create overlay networks
+ - Attach containers to networks
+ - Verify connectivity between containers

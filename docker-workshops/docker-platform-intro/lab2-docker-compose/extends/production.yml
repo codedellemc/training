@@ -1,6 +1,0 @@
-web:
-  extends:
-    file: common.yml
-    service: web
-  environment:
-    - REDIS_HOST=redis-production.example.com
