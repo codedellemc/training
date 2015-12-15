@@ -44,8 +44,6 @@ export DOCKER_MACHINE_NAME="default"
 Now copy & paste either the `export` lines, or run the `eval` command. Both will make sure your shell is correctly configured to connect to the correct container host.
 
 ## Using Docker
-SSH into host `a` using the public IP address provided.
-
 Now that you have a container host there are several things you can do. If you just run the command `docker` you'll get a list of all the commands you can issue.
 
 First off we want to have a look at the Docker installation information, so run:
