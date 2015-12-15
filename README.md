@@ -39,15 +39,17 @@ To get started on your own outside the classroom, follow the directions specifie
 
 ### Lab IV: Container Persistence
 
+WIP
+
  - Slide on storage persistence and it's necessity
- - Tour of [REX-Ray](https://github.com/emccode/rexray)
- - Create Volume with [REX-Ray](https://github.com/emccode/rexray)
- - Demo persistence between container instances
+ - Persistence between container instances
  - Docker 1.9 Enhanced Storage features
  - Create volume with Docker Volume commands
  - Demo persistence between host instances
 
 ### Lab V: Networking Between Container Hosts
+
+WIP
 
  - Destroy Existing Swarm Setup
  - Create New Swarm using Consul
