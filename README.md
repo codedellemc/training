@@ -35,7 +35,7 @@ If you're new to Docker and looking for a great introduction, this will is a goo
 
 ### Lab IV: Container Persistence
 
-WIP
+WIP! Check out https://blog.docker.com/2015/11/docker-1-9-production-ready-swarm-multi-host-networking/ for some ideas on what to test out!
 
  - Slide on storage persistence and it's necessity
  - Persistence between container instances
@@ -45,7 +45,7 @@ WIP
 
 ### Lab V: Networking Between Container Hosts
 
-WIP
+WIP! Check out https://blog.docker.com/2015/11/docker-1-9-production-ready-swarm-multi-host-networking/ for some ideas on what to test out!
 
  - Destroy Existing Swarm Setup
  - Create New Swarm using Consul
