@@ -1,6 +1,8 @@
 Lab IV: Persist a container's state and data
 ===============================
 
+This part is WIP.
+
 ## Description
 
 In this lab, you'll learn how to persist data for containers.  Unlike using virtual machines, containers require that data that must be stored (or persisted) outside of the container itself.  A primary reason behind this is that `Docker` containers are not immediately portable between hosts.  So in order to enable portability of the container between hosts, data must be persisted outside of the container.
@@ -17,7 +19,18 @@ Verify that you have the following software installed:
 ## Persist Data Between Containers
 ** small presentation on why persistence**
 
-Adding a data volume
+A data volume is a specially-designated directory within one or more containers that bypasses the Union File System. Data volumes provide several useful features for persistent or shared data:
+
+* Volumes are initialized when a container is created. If the container’s base image contains data at the specified mount point, that existing data is copied into the new volume upon volume initialization.
+* Data volumes can be shared and reused among containers.
+* Changes to a data volume are made directly.
+* Changes to a data volume will not be included when you update an image.
+* Data volumes persist even if the container itself is deleted.
+
+Data volumes are designed to persist data, independent of the container’s life cycle. Docker therefore never automatically delete volumes when you remove a container, nor will it “garbage collect” volumes that are no longer referenced by a container.
+
+### Adding a data volume
+
 You can add a data volume to a container using the -v flag with the docker create and docker run command. You can use the -v multiple times to mount multiple data volumes. Let’s mount a single volume now in our web application container.
 
 ```
@@ -59,6 +72,7 @@ If you remove containers that mount volumes, including the initial dbdata contai
 
 ## Docker 1.9 New and Enhanced Features for Data Persistence
 Docker can now control the creation of volumes and specification of advanced volume options. Instead of creating volumes directly manually we can create them with Docker:
+
 ```
 $ docker volume create --name=<yourVolumeName2> --opt=volumetype=io1 --opt=iops=100 --opt=size=10
 ```
