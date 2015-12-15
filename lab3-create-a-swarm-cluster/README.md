@@ -61,18 +61,7 @@ To switch which machine the `docker` client/CLI talks to, follow the instruction
 $ docker-machine env MACHINE_NAME
 ```
 
-Each host is going to act as a pool of resources for the cluster. Therefore, a swarm agent must be running on each host. Use `docker-machine env` to switch to `agent1` and `agent2`. Replace `<your token>` with the Swarm token from earlier and run the following command (Replace PUBLIC_IP with the IP of the host. You can get this by running ```docker-machine ip MACHINE_NAME```):
-
-```
-docker run -d --restart=always --name swarm-agent swarm:1.0.1 join --advertise PUBLIC_IP:2376 token://<your token>
-
-% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                               Dload  Upload   Total   Spent    Left  Speed
-100    12  100    12    0     0   3524      0 --:--:-- --:--:-- --:--:--  4000
-e8017015d72df0638892ec48687b4255f9e887ed1768fc5f25bd18ce73dd0e03
-```
-
-Once that is done on both machines, perform a `docker ps` to verify the container is running.
+Create two agents (agent-00 and agent-01) and perform a `docker ps` against each of them (Switch between them using `docker-machine env`) to verify the Swarm container is running.
 
 ## Configure Swarm Master
 Now that each of our hosts are acting as resources for the pool, we have to have a manager of these resources. This manager will become the docker endpoint. This means we will redirect our docker engine commands to point to the swarm master. When we issue commands to create a new container, the swarm master is responsible for looking at the pool of resources and deciding where to place the container.
