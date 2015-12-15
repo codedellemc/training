@@ -56,6 +56,8 @@ docker-machine create \
     swarm-agent-00
 ```
 
+To see a list over all hosts handled by `docker-machine` run the `docker-machine ls` command.
+
 To switch which machine the `docker` client/CLI talks to, follow the instructions when running:
 ```
 $ docker-machine env MACHINE_NAME

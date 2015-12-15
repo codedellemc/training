@@ -1,47 +1,39 @@
 Lab V: Networking Between Container Hosts
 ===============================
 
+This part is WIP.
+
 ## Description
 
 In this lab, you'll learn how to have containers talk to each other using overlay networks.
 
 ### Lab setup
 
-Each participant has been handed a piece of paper with two machines `student00Xa` and `student00Xb` with their associated IP addresses. Each machine has been provisioned by Docker Machine with Docker 1.9 and REX-Ray 0.2 installed for use. The SSH password for each host is the host name. ie. Host `student001a`'s password is `student001a`
+Same as Lab 1.
 
-**NOTE:** `v1.0.0` is going to be used for Swarm as of this writing to allow libnetwork to properly function.
+Verify that you have the following software installed:
 
-#### Mac/Linux
-Use Terminal
-`ssh IPADDRESS -l student001a`
-
-#### Windows
-Use PuTTy
-
+1. A 64-bit OS
+2. [Docker Toolbox](https://www.docker.com/toolbox)
 
 ## Destroy the existing Swarm instance
 Networking in Docker 1.9 requires the use of Consul as the swarm dependency. So we are going to create a new Swarm instance for our hosts.
 
-Get back to default and point the CLI to the local docker instance.
-```
-$ unset DOCKER_TLS_VERIFY
-$ unset DOCKER_HOST
-```
+That means we will get rid of the old Swarm from lab3:
 
-Stop and remove the Swarm Agents on both hosts `a` and `b`.
 ```
-$ docker stop swarm-agent
-$ docker rm swarm-agent
-```
+docker-machine kill swarm-agent-00
+docker-machine rm swarm-agent-00
 
-On host `a`, remove the Swarm Master
-```
-$ docker stop swarm-agent-master
-$ docker rm swarm-agent-master
+docker-machine kill swarm-agent-01
+docker-machine rm swarm-agent-01
+
+docker-machine kill swarm-master
+docker-machine rm swarm-master
 ```
 
 ## Create A New Swarm Instance with Consul
-Next, we need to add a few Docker Engine options which are necessary for networking to function. Perform these functions on both hosts `a` and `b`:
+Next, we need to add a few Docker Engine options which are necessary for networking to function. Perform these functions on:
 ```
 $ sudo service docker stop
 $ sudo sed -i '10 a --cluster-advertise=eth0:2376' /etc/default/docker
