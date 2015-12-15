@@ -24,7 +24,7 @@ Create a new directory to host the compose file called ```composetest```.
 Inside this directory, create ```app.py```, a simple web app that uses the Flask framework and increments a value in Redis. You don't need Python installed since we are going to run the app inside a container later.
 
 Copy and paste the following into `app.py` and save the file:
-```
+```py
 from flask import Flask
 from redis import Redis
 
