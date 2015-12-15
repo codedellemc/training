@@ -118,6 +118,8 @@ Total Memory: 2.043 GiB
 Name: b187c3b2664f
 ```
 
+You can still see the Swarm containers by running `docker ps -a`.
+
 ## Using Docker with Swarm
 
 Now that you have a two container hosts combined with Swarm, use the `docker run` command against the swarm master (`docker-machine env --swarm swarm-master`).
