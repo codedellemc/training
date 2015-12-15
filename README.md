@@ -37,6 +37,8 @@ If you're new to Docker and looking for a great introduction, this will is a goo
 
 WIP! Check out https://blog.docker.com/2015/11/docker-1-9-production-ready-swarm-multi-host-networking/ for some ideas on what to test out!
 
+(https://docs.clusterhq.com/en/1.8.0/introduction/what-is-flocker.html)
+
  - Slide on storage persistence and it's necessity
  - Persistence between container instances
  - Docker 1.9 Enhanced Storage features
@@ -46,6 +48,8 @@ WIP! Check out https://blog.docker.com/2015/11/docker-1-9-production-ready-swarm
 ### Lab V: Networking Between Container Hosts
 
 WIP! Check out https://blog.docker.com/2015/11/docker-1-9-production-ready-swarm-multi-host-networking/ for some ideas on what to test out!
+
+(http://blog.docker.com/2015/11/docker-multi-host-networking-ga/)
 
  - Destroy Existing Swarm Setup
  - Create New Swarm using Consul
