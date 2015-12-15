@@ -40,14 +40,11 @@ f29ab346337368c83f4087d21900b75d
 
 Save that Token/Unique ID on the last line. (ie. `f29ab346337368c83f4087d21900b75d`).
 
-This token is used by Swarm to register with the Docker Registry, which will operate as our service discovery service. It's possible to provide other Service Discovery services.
+This token is used by Swarm to register with the Docker Hub, which will operate as our service discovery service. It's possible to provide other Service Discovery services.
 
 ## Configure Swarm Agents
 
-
-## Creating more hosts
-
-Swarm is used to cluster hosts together, so to test Swarm we are going to need more hosts host.
+Swarm is used to cluster hosts together, so to test Swarm we are going to need more hosts.
 
 Docker Machine makes it trivial to create more hosts in our Swarm:
 
@@ -59,7 +56,7 @@ docker-machine create \
     swarm-agent-00
 ```
 
-To switch which machine the `docker`client/CLI talks to follow the instructions when running
+To switch which machine the `docker` client/CLI talks to, follow the instructions when running:
 ```
 $ docker-machine env MACHINE_NAME
 ```
@@ -91,22 +88,20 @@ docker-machine create \
         swarm-master
 ```
 
-If you are on Windows running a shell emulator it might attempt to translate the paths to Windows paths. Try running the command from `powershell` instead if this happens.
+If you connect directly to this machine using the instructions from `docker-machine env swarm-master`, `docker ps` will display something like this:
 
-Now run the Swarm Master container.
 ```
-docker run -d --restart=always --name swarm-agent-master -p 3376:3376 swarm:1.0.1 manage --tlsverify --tlscacert=/etc/docker/ca.pem --tlscert=/etc/docker/server.pem --tlskey=/etc/docker/server-key.pem -H tcp://0.0.0.0:3376 --strategy spread  token://<your token>
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS                              NAMES
+0ed11962dae4        swarm:latest        "/swarm join --advert"   About a minute ago   Up About a minute   2375/tcp                           swarm-agent
+ff356faa35ea        swarm:latest        "/swarm manage --tlsv"   About a minute ago   Up About a minute   2375/tcp, 0.0.0.0:3376->3376/tcp   swarm-agent-master
 ```
 
-Now, do `docker ps`. The output of this is a result of showing every container only on this host. We are going to configure `default`'s' docker engine to point to the swarm master.
+We can see here that this machine is running both a swarm agent and a swarm master container. We can also see that the Swarm Manager is listening on port 3376. We can connect to the Swarm by following the instructions given by `docker-machine env --swarm swarm-master`.
 
-These hosts were provisioned with Docker Machine. By default, Docker Machine installs Docker Engine with TLS certificates to encrypt the communication and service. Docker Machine can automatically configure Swarm for you, but we are configuring it manually as part of this training, thus we have to take a few extra steps to make this all work.
+Now, do `docker ps`.
 
-Setup environment variables to point the Docker CLI to the Swarm Master
-
-
-
-Now do `docker ps` again. What happened? We can see that there are now no containers running (unless you had containers other than Swarm previously running).
+What happened? We can see that there are now no containers running (unless you had containers other than Swarm previously running).
 
 Run `docker info` and you will see something different than before
 ```
