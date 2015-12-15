@@ -19,7 +19,7 @@ Swarm uses a distributed key:value pair to cluster hosts together. The first ste
 
 Make sure the docker client is connected to the `default` machine.
 
-`docker run --rm swarm:1.0.1 create` will use v1.0.1 of Swarm to create a new unique ID.
+`docker run --rm swarm:1.0.1 create` will use v1.0.1 of Swarm to create a new unique ID. The `--rm` flag removes the container after it exits. If you don't pass the `--rm` flag you can see the container by running `docker ps -a`.
 
 ```
 student001a@student001a:~$ docker run --rm swarm:1.0.1 create
@@ -105,37 +105,40 @@ What happened? We can see that there are now no containers running (unless you h
 
 Run `docker info` and you will see something different than before
 ```
-student001a@student001a:~$ docker info
-Containers: 8
-Images: 8
+$ docker info
+Containers: 2
+Images: 2
 Role: primary
 Strategy: spread
 Filters: health, port, dependency, affinity, constraint
 Nodes: 2
- student012a: 54.174.23.28:2376
-  └ Containers: 7
-  └ Reserved CPUs: 0 / 1
-  └ Reserved Memory: 0 B / 1.017 GiB
-  └ Labels: executiondriver=native-0.2, kernelversion=3.19.0-30-generic, operatingsystem=Ubuntu 14.04.3 LTS, provider=amazonec2, storagedriver=aufs
- student012b: 54.173.131.60:2376
-  └ Containers: 1
-  └ Reserved CPUs: 0 / 1
-  └ Reserved Memory: 0 B / 1.017 GiB
-  └ Labels: executiondriver=native-0.2, kernelversion=3.19.0-30-generic, operatingsystem=Ubuntu 14.04.3 LTS, provider=amazonec2, storagedriver=aufs
+ swarm-agent-00: 192.168.99.109:2376
+   Status: Healthy
+   Containers: 1
+   Reserved CPUs: 0 / 1
+   Reserved Memory: 0 B / 1.021 GiB
+   Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
+ swarm-agent-01: 192.168.99.110:2376
+   Status: Healthy
+   Containers: 1
+   Reserved CPUs: 0 / 1
+   Reserved Memory: 0 B / 1.021 GiB
+   Labels: executiondriver=native-0.2, kernelversion=4.1.13-boot2docker, operatingsystem=Boot2Docker 1.9.1 (TCL 6.4.1); master : cef800b - Fri Nov 20 19:33:59 UTC 2015, provider=virtualbox, storagedriver=aufs
 CPUs: 2
-Total Memory: 2.033 GiB
-Name: 6ebfc1be0989
+Total Memory: 2.043 GiB
+Name: b187c3b2664f
 ```
 
 ## Using Docker with Swarm
 
-Now that you have a two container hosts combined with Swarm, use the `docker run` command on machine `a` that has been configured to point to the swarm master.
+Now that you have a two container hosts combined with Swarm, use the `docker run` command against the swarm master (`docker-machine env --swarm swarm-master`).
 
-Run `docker run -tid busybox` and then to a `docker ps`. If you notice, the name of the container has changed and now has a prefix. This prefix indicates what machine it's running on.  The following shows the new container running from `student002b`.
+Run `docker run -tid busybox` and then to a `docker ps`. If you notice, the name of the container has changed and now has a prefix. This prefix indicates what machine it's running on.  The following shows the new container running from `swarm-agent-01`:
 
 ```
-CONTAINER ID        IMAGE               COMMAND             CREATED                  STATUS                  PORTS                          NAMES
-92c2cecf17b7        busybox             "sh"                Less than a second ago   Up Less than a second                                  student002b/elegant_mahavira
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+61d851072c24        busybox             "sh"                3 seconds ago       Up 2 seconds                            swarm-agent-01/romantic_galileo
 ```
 
 Run `docker run -tid busybox` a few more times. You will see that the amount of containers on each host is spread evenly. This is because we are using the `spread` strategy for Swarm. The other options would have been `binpack` and `random`.
