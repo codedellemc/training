@@ -7,24 +7,24 @@ In this lab you'll setup a Docker Swarm cluster with the machines you have been 
 
 ### Lab setup
 
-Each participant has been handed a piece of paper with two machines `student00Xa` and `student00Xb` with their associated IP addresses. Each machine has been provisioned by Docker Machine with Docker 1.9 and REX-Ray 0.2 installed for use. The SSH password for each host is the host name. ie. Host `student001a`'s password is `student001a`
+Same as Lab 1.
 
-#### Mac/Linux
-Use Terminal
-`ssh IPADDRESS -l student001a`
+Verify that you have the following software installed:
 
-#### Windows
-Use PuTTy
+1. A 64-bit OS
+2. [Docker Toolbox](https://www.docker.com/toolbox)
 
 ## Get A Swarm ID
 Swarm uses a distributed key:value pair to cluster hosts together. The first step to creating a swarm on your network is to pull the Docker Swarm image. Then, using Docker, you configure the swarm manager and all the nodes to run Docker Swarm.
 
-1. SSH into your `a` machine
-2. `docker run --rm swarm:1.0.0 create` will use v1.0.0 of Swarm to create a new unique ID.
+Make sure the docker client is connected to the `default` machine.
+
+`docker run --rm swarm:1.0.1 create` will use v1.0.1 of Swarm to create a new unique ID.
+
 ```
-student001a@student001a:~$ docker run --rm swarm:1.0.0 create
-Unable to find image 'swarm:1.0.0' locally
-1.0.0: Pulling from library/swarm
+student001a@student001a:~$ docker run --rm swarm:1.0.1 create
+Unable to find image 'swarm:1.0.1' locally
+1.0.1: Pulling from library/swarm
 2bc79aec8ea0: Pull complete
 dc2fb86a875a: Pull complete
 435e648d0f23: Pull complete
@@ -34,18 +34,40 @@ e16042a92d05: Pull complete
 2b4c55187a27: Pull complete
 6b40fe7724bd: Pull complete
 Digest: sha256:989dd783c2a2e6decd3b60f52a8a99b81a2a7ff24c8b3fd7cb4b8bd699e61f6b
-Status: Downloaded newer image for swarm:1.0.0
+Status: Downloaded newer image for swarm:1.0.1
 f29ab346337368c83f4087d21900b75d
 ```
-3. Save that Token/Unique ID on the last line. (ie. `f29ab346337368c83f4087d21900b75d`).
 
+Save that Token/Unique ID on the last line. (ie. `f29ab346337368c83f4087d21900b75d`).
+
+This token is used by Swarm to register with the Docker Registry, which will operate as our service discovery service. It's possible to provide other Service Discovery services.
 
 ## Configure Swarm Agents
-Each host is going to act as a pool of resources for the cluster. Therefore, a swarm agent must be installed on each host. Create two SSH sessions for your hosts `a` and `b`. Replace `<your token>` with the Swarm token from earlier
 
-1.
+
+## Creating more hosts
+
+Swarm is used to cluster hosts together, so to test Swarm we are going to need more hosts host.
+
+Docker Machine makes it trivial to create more hosts in our Swarm:
+
 ```
-docker run -d --restart=always --name swarm-agent swarm:1.0.0 join --advertise $(curl http://169.254.169.254/latest/meta-data/public-ipv4):2376 token://<your token>
+docker-machine create \
+    -d virtualbox \
+    --swarm \
+    --swarm-discovery token://<TOKEN-FROM-ABOVE> \
+    swarm-agent-00
+```
+
+To switch which machine the `docker`client/CLI talks to follow the instructions when running
+```
+$ docker-machine env MACHINE_NAME
+```
+
+Each host is going to act as a pool of resources for the cluster. Therefore, a swarm agent must be running on each host. Use `docker-machine env` to switch to `agent1` and `agent2`. Replace `<your token>` with the Swarm token from earlier and run the following command (Replace PUBLIC_IP with the IP of the host. You can get this by running ```docker-machine ip MACHINE_NAME```):
+
+```
+docker run -d --restart=always --name swarm-agent swarm:1.0.1 join --advertise PUBLIC_IP:2376 token://<your token>
 
 % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                Dload  Upload   Total   Spent    Left  Speed
@@ -58,26 +80,31 @@ Once that is done on both machines, perform a `docker ps` to verify the containe
 ## Configure Swarm Master
 Now that each of our hosts are acting as resources for the pool, we have to have a manager of these resources. This manager will become the docker endpoint. This means we will redirect our docker engine commands to point to the swarm master. When we issue commands to create a new container, the swarm master is responsible for looking at the pool of resources and deciding where to place the container.
 
-For this instance, let's use machine `a` as our Swarm Master.
+Docker Machine takes away a lot of the hassle of creating a Swarm Manager:
+
+```
+docker-machine create \
+        -d virtualbox \
+        --swarm \
+        --swarm-master \
+        --swarm-discovery token://<TOKEN-FROM-BEFORE> \
+        swarm-master
+```
+
+If you are on Windows running a shell emulator it might attempt to translate the paths to Windows paths. Try running the command from `powershell` instead if this happens.
 
 Now run the Swarm Master container.
 ```
-docker run -d --restart=always --name swarm-agent-master -p 3376:3376 -v /etc/docker:/etc/docker swarm:1.0.0 manage --tlsverify --tlscacert=/etc/docker/ca.pem --tlscert=/etc/docker/server.pem --tlskey=/etc/docker/server-key.pem -H tcp://0.0.0.0:3376 --strategy spread  token://<your token>
+docker run -d --restart=always --name swarm-agent-master -p 3376:3376 swarm:1.0.1 manage --tlsverify --tlscacert=/etc/docker/ca.pem --tlscert=/etc/docker/server.pem --tlskey=/etc/docker/server-key.pem -H tcp://0.0.0.0:3376 --strategy spread  token://<your token>
 ```
 
-Now, do `docker ps`. The output of this is a result of showing every container only on this host. We are going to configure `a`'s' docker engine to point to the swarm master. Replace HOSTIP with the PUBLIC IP.
+Now, do `docker ps`. The output of this is a result of showing every container only on this host. We are going to configure `default`'s' docker engine to point to the swarm master.
 
 These hosts were provisioned with Docker Machine. By default, Docker Machine installs Docker Engine with TLS certificates to encrypt the communication and service. Docker Machine can automatically configure Swarm for you, but we are configuring it manually as part of this training, thus we have to take a few extra steps to make this all work.
 
-1. Create a new directory: `mkdir ~/.docker`
-2. Copy `server.pem`: `sudo cp /etc/docker/server.pem ~/.docker/cert.pem`
-3. Copy `server-key.pem` : `sudo cp /etc/docker/server-key.pem ~/.docker/key.pem`
-4. Copy `ca.pem`: `sudo cp /etc/docker/ca.pem ~/.docker/ca.pem`
-
 Setup environment variables to point the Docker CLI to the Swarm Master
 
-1. `export DOCKER_TLS_VERIFY=1`
-2. `export DOCKER_HOST=tcp://$(curl http://169.254.169.254/latest/meta-data/public-ipv4):3376`
+
 
 Now do `docker ps` again. What happened? We can see that there are now no containers running (unless you had containers other than Swarm previously running).
 
