@@ -10,12 +10,11 @@
 
 * Products, People, and Process
   * VxRail, VxRack, VxBlock
+  * Cloud Platforms: EHC, NHC, Neutrino
+  * Pivotal Engagements: Labs, Big Data Suite, Cloud Foundary
   * Software, Subscriptions, and Licensing ( VMware, EMC, Pivotal, 3rd Party )
   * Custom Service Engagements
-  * Strategic Workshops
-  * Cloud Platforms
-  * Pivotal Engagements
-  * SAAS, PAAS, IAAS
+  * Strategic Vision Advisory Workshops: IT Transformation, Cloud Advisory
 
 ---
 
@@ -26,5 +25,5 @@
   * VirtuStream
   * Pivotal
   * EMC Select Partners ie. Horton 
-*
+
 
