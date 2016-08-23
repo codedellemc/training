@@ -8,12 +8,23 @@
 ---
 
 
-* Neutrino & Native Hybrid Cloud
-  * Description coming post announcement
-* VxRail & VxRack
+* Products, People, and Process
+  * VxRail, VxRack, VxBlock
+  * Software, Subscriptions, and Licensing ( VMware, EMC, Pivotal, 3rd Party )
+  * Custom Service Engagements
+  * Strategic Workshops
+  * Cloud Platforms
+  * Pivotal Engagements
+  * SAAS, PAAS, IAAS
 
 ---
 
-* DSSD
-* ECS 2.2 & EOS2
-* vCloud Air / Virtustream
+* Strategic Partner Portfolios
+  * Dell
+  * EMC
+  * VMWare
+  * VirtuStream
+  * Pivotal
+  * EMC Select Partners ie. Horton 
+*
+
